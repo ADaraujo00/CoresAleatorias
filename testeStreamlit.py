@@ -56,6 +56,8 @@ if uploaded_file is not None:
 
     # Verificar se o DataFrame não está vazio
     if not results_df.empty:
+        # Converter cores para inteiros padrão
+        results_df['Color'] = results_df['Color'].apply(lambda x: tuple(map(int, x)))
         color_map = {str(tuple(color)): f'rgb{tuple(color)}' for color in results_df['Color']}
 
         # Verificar se os dados estão corretos antes de criar o gráfico
