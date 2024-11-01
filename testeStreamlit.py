@@ -61,25 +61,28 @@ if uploaded_file is not None:
         # Verificar se os dados estão corretos antes de criar o gráfico
         st.write("Dados das cores:", results_df)
 
-        fig = px.bar(
-            results_df,
-            x='Percentage',
-            y=results_df['Color'].apply(str),
-            orientation='h',
-            title='Cores na Imagem por Percentagem',
-            labels={'Percentage': 'Percentagem(%)', 'y': 'Cor'},
-            text=results_df['Percentage'].apply(lambda x: f'{x:.2f}%'),
-            color=results_df['Color'].apply(str),
-            color_discrete_map=color_map,
-            height=800,
-            width=1000,
-        )
+        try:
+            fig = px.bar(
+                results_df,
+                x='Percentage',
+                y=results_df['Color'].apply(str),
+                orientation='h',
+                title='Cores na Imagem por Percentagem',
+                labels={'Percentage': 'Percentagem(%)', 'y': 'Cor'},
+                text=results_df['Percentage'].apply(lambda x: f'{x:.2f}%'),
+                color=results_df['Color'].apply(str),
+                color_discrete_map=color_map,
+                height=800,
+                width=1000,
+            )
 
-        fig.update_layout(yaxis={'categoryorder': 'total ascending'},
-                          plot_bgcolor='#FFFFFF', paper_bgcolor='#FFFFFF', font=dict(color='black'))
+            fig.update_layout(yaxis={'categoryorder': 'total ascending'},
+                              plot_bgcolor='#FFFFFF', paper_bgcolor='#FFFFFF', font=dict(color='black'))
 
-        st.image(image, caption='Imagem Carregada', use_column_width=True)
-        st.plotly_chart(fig)
-        st.dataframe(results_df.round(2))
+            st.image(image, caption='Imagem Carregada', use_column_width=True)
+            st.plotly_chart(fig)
+            st.dataframe(results_df.round(2))
+        except ValueError as e:
+            st.error(f"Erro ao criar o gráfico: {e}")
     else:
         st.write("Nenhuma cor significativa encontrada na imagem.")
