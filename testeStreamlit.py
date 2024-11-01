@@ -20,8 +20,7 @@ def process_image(image):
     image = image.convert('RGB')
     image = image.resize((image.width // 4, image.height // 4))
     colors = np.array(image.getdata())
-    filtered_colors = np.array(
-        [color for color in colors if not is_gray_or_white(color)])
+    filtered_colors = np.array([color for color in colors if not is_gray_or_white(color)])
 
     n_colors = 14
     kmeans = KMeans(n_clusters=n_colors, random_state=0,
