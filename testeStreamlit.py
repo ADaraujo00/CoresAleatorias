@@ -54,25 +54,29 @@ if uploaded_file is not None:
     # Desconsiderar cores com porcentagem menor que 1%
     results_df = results_df[results_df['Percentage'] >= 1]
 
-    color_map = {str(tuple(color)): f'rgb{tuple(color)}' for color in results_df['Color']}
+    # Verificar se o DataFrame não está vazio
+    if not results_df.empty:
+        color_map = {str(tuple(color)): f'rgb{tuple(color)}' for color in results_df['Color']}
 
-    fig = px.bar(
-        results_df,
-        x='Percentage',
-        y=results_df['Color'].apply(str),
-        orientation='h',
-        title='Cores na Imagem por Percentagem',
-        labels={'Percentage': 'Percentagem(%)', 'y': 'Cor'},
-        text=results_df['Percentage'].apply(lambda x: f'{x:.2f}%'),
-        color=results_df['Color'].apply(str),
-        color_discrete_map=color_map,
-        height=800,
-        width=1000,
-    )
+        fig = px.bar(
+            results_df,
+            x='Percentage',
+            y=results_df['Color'].apply(str),
+            orientation='h',
+            title='Cores na Imagem por Percentagem',
+            labels={'Percentage': 'Percentagem(%)', 'y': 'Cor'},
+            text=results_df['Percentage'].apply(lambda x: f'{x:.2f}%'),
+            color=results_df['Color'].apply(str),
+            color_discrete_map=color_map,
+            height=800,
+            width=1000,
+        )
 
-    fig.update_layout(yaxis={'categoryorder': 'total ascending'},
-                      plot_bgcolor='#FFFFFF', paper_bgcolor='#FFFFFF', font=dict(color='black'))
+        fig.update_layout(yaxis={'categoryorder': 'total ascending'},
+                          plot_bgcolor='#FFFFFF', paper_bgcolor='#FFFFFF', font=dict(color='black'))
 
-    st.image(image, caption='Imagem Carregada', use_column_width=True)
-    st.plotly_chart(fig)
-    st.dataframe(results_df.round(2))
+        st.image(image, caption='Imagem Carregada', use_column_width=True)
+        st.plotly_chart(fig)
+        st.dataframe(results_df.round(2))
+    else:
+        st.write("Nenhuma cor significativa encontrada na imagem.")
