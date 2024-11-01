@@ -20,7 +20,8 @@ def process_image(image):
     image = image.convert('RGB')
     image = image.resize((image.width // 4, image.height // 4))
     colors = np.array(image.getdata())
-    filtered_colors = np.array([color for color in colors if not is_gray_or_white(color)])
+    filtered_colors = np.array(
+        [color for color in colors if not is_gray_or_white(color)])
 
     n_colors = 14
     kmeans = KMeans(n_clusters=n_colors, random_state=0,
@@ -56,6 +57,9 @@ if uploaded_file is not None:
     # Verificar se o DataFrame não está vazio
     if not results_df.empty:
         color_map = {str(tuple(color)): f'rgb{tuple(color)}' for color in results_df['Color']}
+
+        # Verificar se os dados estão corretos antes de criar o gráfico
+        st.write("Dados das cores:", results_df)
 
         fig = px.bar(
             results_df,
