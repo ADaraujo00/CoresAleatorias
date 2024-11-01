@@ -61,7 +61,7 @@ if uploaded_file is not None:
         color_map = {str(tuple(color)): f'rgb{tuple(color)}' for color in results_df['Color']}
 
         # Verificar se os dados estão corretos antes de criar o gráfico
-        st.write("Dados das cores:", results_df)
+        st.write("Dados das cores:", results_df[['Color', 'Percentage']].round(2))
 
         try:
             fig = px.bar(
@@ -83,7 +83,6 @@ if uploaded_file is not None:
 
             st.image(image, caption='Imagem Carregada', use_column_width=True)
             st.plotly_chart(fig)
-            st.dataframe(results_df.round(2))
         except ValueError as e:
             st.error(f"Erro ao criar o gráfico: {e}")
     else:
